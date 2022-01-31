@@ -5,28 +5,30 @@ void settings_activated(GSimpleAction *settings_act, gpointer app_data) {
 	printf("Hello\n");
 }
 
+void help_activated(GSimpleAction *help_act, gpointer app_data) {
+	printf("Hellofj\n");
+}
+
 // **** Functions **** //
-void application_init(GtkApplication *app, Widgets *app_data) {
-	g_signal_connect(app, "startup", G_CALLBACK(startup), app_data);
-	g_signal_connect(app, "activate", G_CALLBACK(activate), app_data);
-	app_data->app = app;
+
+void get_playlist(GtkFileChooserNative *file_chooser, int response, gpointer app_data) {
+	if (response == GTK_RESPONSE_ACCEPT) {
+		GFile *playlist_dir = gtk_file_chooser_get_file(GTK_FILE_CHOOSER(file_chooser));
+		printf("%s\n", g_file_get_path(playlist_dir));
+		// GFileEnumerator *something
+		// g_file_enumerate_children
+		// access GFileEnumerator and get the GFile info
+		// g_file_info_get_name
+		// g_file_get_child --> pass in the name obtained from prev.
+		// Linked List of GFile
+		
+		
+		g_object_unref(playlist_dir);
+	}
+	gtk_native_dialog_hide(GTK_NATIVE_DIALOG(file_chooser));
+	
 }
 
-void app_window_init(GtkWidget *window, gpointer app_data) {
-	gtk_window_set_title(GTK_WINDOW(window), "Musicbox");
-	gtk_window_set_default_size(GTK_WINDOW(window), 500, 450);
-	WIDGETS(app_data)->window = window;
-}
-
-void headerbar_init(Headerbar *headerbar, gpointer app_data) {
-	g_menu_append_item(headerbar->menu, headerbar->settings_opt);
-	gtk_menu_button_set_menu_model(headerbar->menu_button, G_MENU_MODEL(headerbar->menu));
-	gtk_header_bar_pack_end(GTK_HEADER_BAR(headerbar->bar), headerbar->menu_button);
-	gtk_window_set_titlebar(GTK_WINDOW(WIDGETS(app_data)->window), headerbar->bar);
-	WIDGETS(app_data)->headerbar = headerbar;
-
-	g_object_unref(headerbar->settings_opt);
-}
 
 
 

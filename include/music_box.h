@@ -1,7 +1,8 @@
 #include <gtk/gtk.h>
-// #include <adwaita.h>
+#include <libadwaita-1/adwaita.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <pthread.h>
 
@@ -14,43 +15,45 @@
 #ifndef MUSIC_BOX_
 #define MUSIC_BOX_
 
-// **** Macros **** //
+// **** MACROS **** //
 #define WIDGETS(a) ((Widgets*)a)
 
-// **** Structs **** //
+// **** STRUCTS **** //
 
 typedef struct _Headerbar {
 	GtkWidget 		*bar;
+
+	GMenu 			*burger_menu;
+
 	GMenuItem 		*settings_opt;	
 	GMenuItem		*help_opt;	// do it
-	GMenu 			*menu;
-	GtkWidget 		*menu_button;
+
+	GtkWidget 		*burger_menu_button;
+	GtkWidget		*mute_button; // do it
 
 } Headerbar;
 
 
 typedef struct _Widgets {
-	GtkApplication 	*app;
-	GtkWidget 		*window;
-	GtkWidget 		*file_chooser;
-	Headerbar 		*headerbar;
+	GtkApplication 				*app;
+	GtkWidget 					*window;
+	GtkFileChooserNative 		*file_chooser;
+	Headerbar 					*headerbar;
 } Widgets;
 
-// **** G_Action Functions **** //
+// **** GACTION FUNCTIONS **** //
 void settings_activated(GSimpleAction *settings_act, gpointer app_data);
 
 void help_activated(GSimpleAction *help_act, gpointer app_data);
 
-// **** Functions **** //
+// **** FUNCTIONS **** //
 void startup(GtkApplication *app, gpointer app_data);
 
 void activate(GtkApplication *app, gpointer app_data);
 
-void application_init(GtkApplication *app, Widgets *app_data);
+void shutdown(GtkApplication *app, gpointer app_data);
 
-void app_window_init(GtkWidget *window, gpointer app_data);
-
-void headerbar_init(Headerbar* headerbar, gpointer app_data);
+void get_playlist(GtkFileChooserNative *file_chooser, int response, gpointer app_data);
 
 
 #endif
