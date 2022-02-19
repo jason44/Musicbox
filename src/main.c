@@ -1,7 +1,7 @@
 #include "music_box.h"
 
 int main(int argc, char *argv[]) {
-	MusicBox * music_box;
+	MusicBox *music_box = malloc(sizeof(MusicBox));
 	if (music_box == NULL) {printf("Runtime error: failed to initialize app data\n"); return 1;}
 
 	GtkApplication *app = gtk_application_new("com.github.jason44", G_APPLICATION_FLAGS_NONE);
@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 		g_signal_connect(app, "shutdown", G_CALLBACK(shutdown), music_box);
 
 	int status = g_application_run(G_APPLICATION(app), argc, argv);
-
+	free(music_box);
 	g_object_unref(app);
 	return status;
 }
