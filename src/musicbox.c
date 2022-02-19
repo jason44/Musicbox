@@ -1,15 +1,42 @@
 #include "music_box.h"
 
-// **** G_Action Functions **** //
-void settings_activated(GSimpleAction *settings_act, gpointer app_data) {
-	printf("Hello\n");
+// **** GACTION FUNCTIONS **** // Found in startup.c
+void settings_activated(GSimpleAction *settings_act, GVariant *parameter, gpointer app_data) {
+	printf("TEST DIDN't WORK\n");
+	GtkWidget *content_flap = MUSIC_BOX(app_data)->content_flap;
+		if (adw_flap_get_reveal_flap(ADW_FLAP(content_flap)) == false) {
+		adw_flap_set_reveal_flap(ADW_FLAP(content_flap), true);
+		printf("reveal\n");
+		//gtk_widget_set_child_visible(MUSIC_BOX(app_data)->content_box, false);
+		gtk_widget_hide(MUSIC_BOX(app_data)->content_box);
+	}
+	else {
+		adw_flap_set_reveal_flap(ADW_FLAP(content_flap), false);
+		printf("hide\n");
+		//gtk_widget_set_child_visible(MUSIC_BOX(app_data)->content_box, true);
+		gtk_widget_show(MUSIC_BOX(app_data)->content_box);
+
+	}
+	return;
 }
 
-void help_activated(GSimpleAction *help_act, gpointer app_data) {
+void help_activated(GSimpleAction *help_act, GVariant *parameter, gpointer app_data) {
 	printf("Hellofj\n");
 }
 
-// **** Functions **** //
+// **** CALLBACK FUNCTIONS **** //
+void flap_button_clicked(GtkWidget *button, gpointer app_data) {
+	GtkWidget *flap_p = MUSIC_BOX(app_data)->flap;
+	if (adw_flap_get_reveal_flap(ADW_FLAP(flap_p)) == false) {
+		adw_flap_set_reveal_flap(ADW_FLAP(flap_p), true);
+		printf("reveal\n");
+	}
+	else {
+		adw_flap_set_reveal_flap(ADW_FLAP(flap_p), false);
+		printf("hide\n");
+	}
+	return;
+}
 
 void get_playlist(GtkFileChooserNative *file_chooser, int response, gpointer app_data) {
 	if (response == GTK_RESPONSE_ACCEPT) {
